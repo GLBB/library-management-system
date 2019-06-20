@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gl.librarymanagementsystem.mapper.SystemAdminMapper">
+
+    <select id="getByPhoneAndPwd" resultType="cn.gl.librarymanagementsystem.bean.SystemAdmin">
+        select *
+        from system_admin
+        where admin_phone = #{phone} and admin_pwd = #{pwd}
+    </select>
+
+    <select id="getSystemAdmin" parameterType="integer" resultType="cn.gl.librarymanagementsystem.bean.SystemAdmin">
+        select *
+        from system_admin
+        where admin_id = #{id}
+    </select>
+
+    <update id="updateSystemMapper">
+        update system_admin
+        set admin_name = #{adminName},
+            admin_pwd = #{adminPwd},
+            admin_phone = #{adminPhone},
+            admin_email = #{adminEmail}
+        where admin_id = #{adminId}
+    </update>
+</mapper>

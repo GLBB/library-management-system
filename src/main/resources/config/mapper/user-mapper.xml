@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gl.librarymanagementsystem.mapper.UserMapper">
+    <select id="getUserById" parameterType="integer" resultType="User">
+        select * from user where user_id = #{id}
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        update user
+        set user_number = #{userNumber},
+            username = #{username},
+            pwd = #{pwd},
+            department = #{department},
+            major = #{major},
+            phone = #{phone},
+            email = #{email},
+            max = #{max},
+            time = #{time},
+            borrowing_num = #{borrowingNum}
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateUserByUserNumber" parameterType="User">
+        update user
+        set username = #{username},
+            department = #{department},
+            major = #{major},
+            phone = #{phone},
+            email = #{email},
+            max = #{max},
+            time = #{time}
+        where user_number = #{userNumber}
+    </update>
+
+    <select id="getBorrowingRecord" parameterType="integer" resultType="cn.gl.librarymanagementsystem.dto.BorrowRecordDTO">
+        select user_number, book_name, borrow_time, should_time, return_time
+        from user, book_info, borrow_record
+        where user.user_id = borrow_record.user_id
+		    and book_info.book_id = borrow_record.book_id
+			and book_info.state = '0'
+			and user.user_id = #{id}
+    </select>
+
+    <select id="getBorrowRecord" parameterType="integer" resultType="cn.gl.librarymanagementsystem.dto.BorrowRecordDTO">
+        select user_number, book_name, borrow_time, should_time, return_time
+        from user, book_info, borrow_record
+        where user.user_id = borrow_record.user_id
+		    and book_info.book_id = borrow_record.book_id
+			and user.user_id = #{id};
+    </select>
+
+    <insert id="addUser" parameterType="cn.gl.librarymanagementsystem.bean.User">
+        insert into user(user_number, username, pwd, department, major, phone,
+                  email, max, time, borrowing_num)
+        values(#{userNumber},#{username},#{pwd},#{department},#{major},#{phone},
+                #{email},#{max},#{time},#{borrowingNum})
+
+    </insert>
+
+    <delete id="deleteUser" parameterType="integer">
+        delete from user
+        where user_id = #{user_id}
+    </delete>
+
+    <select id="getAllUser" resultType="cn.gl.librarymanagementsystem.bean.User">
+        select *
+        from user
+    </select>
+
+    <select id="getUserByUserNumberAndPwd" resultType="cn.gl.librarymanagementsystem.bean.User">
+        select *
+        from user
+        where user_number = #{userNumber} and
+              pwd = #{pwd}
+    </select>
+
+    <select id="getUserByUserNumber" parameterType="String" resultType="User">
+        select *
+        from user
+        where user_number = #{userNumber}
+    </select>
+</mapper>

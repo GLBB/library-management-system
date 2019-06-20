@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.gl.librarymanagementsystem.mapper.BookInfoMapper">
+    <update id="updateState" >
+        update book_info
+        set state = #{state}
+        where ISBN = #{ISBN}
+    </update>
+
+    <insert id="addBookInfo" parameterType="BookInfo">
+        insert into book_info(book_name, author, translater, price,
+                  ISBN, come_up_time, publish_company, state, entering_man_id, entering_date)
+        values(#{bookName}, #{author}, #{translater}, #{price}, #{ISBN}, #{comeUpTime},
+                 #{publishCompany}, #{state}, #{enteringManId}, #{enteringDate}
+        )
+    </insert>
+
+    <delete id="delBookInfoByISBN" parameterType="String">
+        delete from book_info
+        where ISBN = #{ISBN}
+    </delete>
+
+    <update id="updateBookInfo" parameterType="BookInfo">
+        update book_info
+        set book_name = #{bookName},
+            author = #{author},
+            translater = #{translater},
+            price = #{price},
+            come_up_time = #{comeUpTime},
+            publish_company = #{publishCompany},
+            state = #{state},
+            entering_man_id = #{enteringManId},
+            entering_date = #{enteringDate}
+        where ISBN = #{ISBN}
+    </update>
+
+    <select id="getBookInfoByISBN" parameterType="String" resultType="BookInfo">
+        select *
+        from book_info
+        where ISBN = #{ISBN}
+    </select>
+
+    <select id="getAllBookInfo" resultType="cn.gl.librarymanagementsystem.bean.BookInfo">
+        select *
+        from book_info
+    </select>
+</mapper>

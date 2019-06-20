@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gl.librarymanagementsystem.mapper.BorrowRecordMapper">
+    <select id="getAllBorrowRecord" resultType="cn.gl.librarymanagementsystem.dto.BorrowRecordDTO">
+        select user_number, book_name, borrow_time, should_time, return_time
+        from user, book_info, borrow_record
+        where user.user_id = borrow_record.user_id
+		    and book_info.book_id = borrow_record.book_id
+    </select>
+
+    <select id="countUserBorrowBookNum" resultType="integer">
+        select count(book_id)
+        from borrow_record
+        where return_time = null and user_id = #{userId}
+    </select>
+
+    <insert id="insertBorrowRecord">
+        insert into borrow_record(user_id, book_id, borrow_time, should_time, return_time)
+        values(#{userId}, #{bookId}, #{borrowTime}, #{shouldTime}, #{returnTime})
+    </insert>
+
+    <select id="getByBookIdAndReturnTime" parameterType="integer" resultType="BorrowRecord">
+        select *
+        from borrow_record
+        where book_id = #{bookId} and return_time is null
+    </select>
+
+    <update id="updateBorrowRecordReturnTime" parameterType="cn.gl.librarymanagementsystem.bean.BorrowRecord">
+        update borrow_record
+        set return_time = #{returnTime}
+        where user_id = #{userId} and book_id = #{bookId}
+    </update>
+
+
+</mapper>
